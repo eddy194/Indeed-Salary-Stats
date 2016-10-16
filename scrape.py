@@ -20,21 +20,18 @@ def get_number_of_pages(link):
 	soup = get_soup(link)
 	ads = soup.find("div", {"id": "searchCount"}).text.split(" ")[-1]
 	i = 0
-	print ads
 	while i < int(ads):
-		print i 
-		time.sleep(3)
+		time.sleep(2)
 		extract_all_rates(get_soup(link + "&start=" + str(i)))
 		i += 100
 
 def extract_all_rates(soup):
 	whitelist = set('1234567890 ')
-	all_nobr = soup.select("td > nobr")
-	for element in all_nobr:
+	for element in soup.select("td > nobr"):
  		if("day" in str(element).lower()):
  			answer = ''.join(filter(whitelist.__contains__, str(element.decode_contents(formatter="html"))))
  			numbers = answer.replace("  ", " ").split(" ")
-			numbers = [i for i in numbers if i != '']
+			numbers = [ i for i in numbers if i != '' ]
 			numbers = [ int(x) for x in numbers ]
 		 	scores.append(sum(numbers) / float(len(numbers)))
 
